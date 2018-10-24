@@ -1,21 +1,4 @@
-/*
- *  Copyright (C) 2016 KingJA
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
- */
-
-package lib.kingja.switchbutton;
+package com.multiswitch;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -37,13 +20,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-/**
- * Description  A smart switchable button,support multiple tabs.
- * Create Time  2016/7/27 14:57
- * Author   KingJA
- * Email    kingjavip@gmail.com
- */
-public class SwitchMultiButton extends View {
+public class MultiSwitch extends View {
 
     private static final String TAG = "SwitchMultiButton";
     /*default value*/
@@ -55,7 +32,7 @@ public class SwitchMultiButton extends View {
     private static final int SELECTED_COLOR = 0xffeb7b00;
     private static final int SELECTED_TAB = 0;
     private static final boolean ALLOW_MULTI_TAB = false;
-    private static final String FONTS_DIR = "fonts/";
+
     /*other*/
     private Paint mStrokePaint;
     private Paint mFillPaint;
@@ -69,22 +46,21 @@ public class SwitchMultiButton extends View {
     private int mSelectedColor;
     private float mTextSize;
     private Set<Integer> mSelectedTabs;
-    private String mTypeface;
     private float perWidth;
     private float mTextHeightOffset;
     private Paint.FontMetrics mFontMetrics;
-    private Typeface typeface;
-    private boolean allowMultiTab;
+    private Typeface mTypeface;
+    private boolean mAllowMultiTab;
 
-    public SwitchMultiButton(Context context) {
+    public MultiSwitch(Context context) {
         this(context, null);
     }
 
-    public SwitchMultiButton(Context context, AttributeSet attrs) {
+    public MultiSwitch(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public SwitchMultiButton(Context context, AttributeSet attrs, int defStyleAttr) {
+    public MultiSwitch(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initAttrs(context, attrs);
         initPaint();
@@ -98,21 +74,21 @@ public class SwitchMultiButton extends View {
      */
     private void initAttrs(Context context, AttributeSet attrs) {
         mSelectedTabs = new HashSet<>();
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SwitchMultiButton);
-        mStrokeRadius = typedArray.getDimension(R.styleable.SwitchMultiButton_strokeRadius, STROKE_RADIUS);
-        mStrokeWidth = typedArray.getDimension(R.styleable.SwitchMultiButton_strokeWidth, STROKE_WIDTH);
-        mTextSize = typedArray.getDimension(R.styleable.SwitchMultiButton_textSize, TEXT_SIZE);
-        mSelectedColor = typedArray.getColor(R.styleable.SwitchMultiButton_selectedColor, SELECTED_COLOR);
-        mSelectedTabs.add(typedArray.getInteger(R.styleable.SwitchMultiButton_selectedTab, SELECTED_TAB));
-        allowMultiTab = typedArray.getBoolean(R.styleable.SwitchMultiButton_allowMultiTab, ALLOW_MULTI_TAB);
-        mTypeface = typedArray.getString(R.styleable.SwitchMultiButton_typeface);
-        int mSwitchTabsResId = typedArray.getResourceId(R.styleable.SwitchMultiButton_switchTabs, 0);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.MultiSwitch);
+        mStrokeRadius = typedArray.getDimension(R.styleable.MultiSwitch_strokeRadius, STROKE_RADIUS);
+        mStrokeWidth = typedArray.getDimension(R.styleable.MultiSwitch_strokeWidth, STROKE_WIDTH);
+        mTextSize = typedArray.getDimension(R.styleable.MultiSwitch_textSize, TEXT_SIZE);
+        mSelectedColor = typedArray.getColor(R.styleable.MultiSwitch_selectedColor, SELECTED_COLOR);
+        mSelectedTabs.add(typedArray.getInteger(R.styleable.MultiSwitch_selectedTab, SELECTED_TAB));
+        mAllowMultiTab = typedArray.getBoolean(R.styleable.MultiSwitch_allowMultiTab, ALLOW_MULTI_TAB);
+        int mSwitchTabsResId = typedArray.getResourceId(R.styleable.MultiSwitch_switchTabs, 0);
         if (mSwitchTabsResId != 0) {
             mTabTexts = getResources().getStringArray(mSwitchTabsResId);
             mTabNum = mTabTexts.length;
         }
-        if (!TextUtils.isEmpty(mTypeface)) {
-            typeface = Typeface.createFromAsset(context.getAssets(), FONTS_DIR + mTypeface);
+        String typeface = typedArray.getString(R.styleable.MultiSwitch_typeface);
+        if (!TextUtils.isEmpty(typeface)) {
+            mTypeface = Typeface.createFromAsset(context.getAssets(), typeface);
         }
         typedArray.recycle();
     }
@@ -127,26 +103,30 @@ public class SwitchMultiButton extends View {
         mStrokePaint.setStyle(Paint.Style.STROKE);
         mStrokePaint.setAntiAlias(true);
         mStrokePaint.setStrokeWidth(mStrokeWidth);
+
         // selected paint
         mFillPaint = new Paint();
         mFillPaint.setColor(mSelectedColor);
         mFillPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        mStrokePaint.setAntiAlias(true);
+        mFillPaint.setAntiAlias(true);
+
         // selected text paint
-        mSelectedTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        mSelectedTextPaint = new TextPaint();
         mSelectedTextPaint.setTextSize(mTextSize);
         mSelectedTextPaint.setColor(0xffffffff);
-        mStrokePaint.setAntiAlias(true);
+        mSelectedTextPaint.setAntiAlias(true);
+
         // unselected text paint
-        mUnselectedTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        mUnselectedTextPaint = new TextPaint();
         mUnselectedTextPaint.setTextSize(mTextSize);
         mUnselectedTextPaint.setColor(mSelectedColor);
-        mStrokePaint.setAntiAlias(true);
+        mUnselectedTextPaint.setAntiAlias(true);
+
         mTextHeightOffset = -(mSelectedTextPaint.ascent() + mSelectedTextPaint.descent()) * 0.5f;
         mFontMetrics = mSelectedTextPaint.getFontMetrics();
-        if (typeface != null) {
-            mSelectedTextPaint.setTypeface(typeface);
-            mUnselectedTextPaint.setTypeface(typeface);
+        if (mTypeface != null) {
+            mSelectedTextPaint.setTypeface(mTypeface);
+            mUnselectedTextPaint.setTypeface(mTypeface);
         }
     }
 
@@ -171,8 +151,8 @@ public class SwitchMultiButton extends View {
     private int getDefaultWidth() {
         float tabTextWidth = 0f;
         int tabs = mTabTexts.length;
-        for (int i = 0; i < tabs; i++) {
-            tabTextWidth = Math.max(tabTextWidth, mSelectedTextPaint.measureText(mTabTexts[i]));
+        for (String mTabText : mTabTexts) {
+            tabTextWidth = Math.max(tabTextWidth, mSelectedTextPaint.measureText(mTabText));
         }
         float totalTextWidth = tabTextWidth * tabs;
         float totalStrokeWidth = (mStrokeWidth * tabs);
@@ -208,6 +188,8 @@ public class SwitchMultiButton extends View {
         return result;
     }
 
+    private RectF rectF = new RectF();
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -217,7 +199,8 @@ public class SwitchMultiButton extends View {
         float bottom = mHeight - mStrokeWidth * 0.5f;
 
         //draw rounded rectangle
-        canvas.drawRoundRect(new RectF(left, top, right, bottom), mStrokeRadius, mStrokeRadius, mStrokePaint);
+        rectF.set(left, top, right, bottom);
+        canvas.drawRoundRect(rectF, mStrokeRadius, mStrokeRadius, mStrokePaint);
 
         //draw line
         for (int i = 0; i < mTabNum - 1; i++) {
@@ -231,12 +214,11 @@ public class SwitchMultiButton extends View {
                 //draw selected tab
                 if (i == 0) {
                     drawLeftPath(canvas, left, top, bottom);
-
                 } else if (i == mTabNum - 1) {
                     drawRightPath(canvas, top, right, bottom);
-
                 } else {
-                    canvas.drawRect(new RectF(perWidth * i, top, perWidth * (i + 1), bottom), mFillPaint);
+                    rectF.set(perWidth * i, top, perWidth * (i + 1), bottom);
+                    canvas.drawRect(rectF, mFillPaint);
                 }
                 // draw selected text
                 canvas.drawText(tabText, 0.5f * perWidth * (2 * i + 1) - 0.5f * tabTextWidth, mHeight * 0.5f +
@@ -264,9 +246,11 @@ public class SwitchMultiButton extends View {
         leftPath.lineTo(perWidth, top);
         leftPath.lineTo(perWidth, bottom);
         leftPath.lineTo(left + mStrokeRadius, bottom);
-        leftPath.arcTo(new RectF(left, bottom - 2 * mStrokeRadius, left + 2 * mStrokeRadius, bottom), 90, 90);
+        rectF.set(left, bottom - 2 * mStrokeRadius, left + 2 * mStrokeRadius, bottom);
+        leftPath.arcTo(rectF, 90, 90);
         leftPath.lineTo(left, top + mStrokeRadius);
-        leftPath.arcTo(new RectF(left, top, left + 2 * mStrokeRadius, top + 2 * mStrokeRadius), 180, 90);
+        rectF.set(left, top, left + 2 * mStrokeRadius, top + 2 * mStrokeRadius);
+        leftPath.arcTo(rectF, 180, 90);
         canvas.drawPath(leftPath, mFillPaint);
     }
 
@@ -284,9 +268,11 @@ public class SwitchMultiButton extends View {
         rightPath.lineTo(right - perWidth, top);
         rightPath.lineTo(right - perWidth, bottom);
         rightPath.lineTo(right - mStrokeRadius, bottom);
-        rightPath.arcTo(new RectF(right - 2 * mStrokeRadius, bottom - 2 * mStrokeRadius, right, bottom), 90, -90);
+        rectF.set(right - 2 * mStrokeRadius, bottom - 2 * mStrokeRadius, right, bottom);
+        rightPath.arcTo(rectF, 90, -90);
         rightPath.lineTo(right, top + mStrokeRadius);
-        rightPath.arcTo(new RectF(right - 2 * mStrokeRadius, top, right, top + 2 * mStrokeRadius), 0, -90);
+        rectF.set(right - 2 * mStrokeRadius, top, right, top + 2 * mStrokeRadius);
+        rightPath.arcTo(rectF, 0, -90);
         canvas.drawPath(rightPath, mFillPaint);
     }
 
@@ -309,7 +295,7 @@ public class SwitchMultiButton extends View {
     }
 
     /**
-     * check attribute whehere suitable
+     * check attribute where suitable
      */
     private void checkAttrs() {
         if (mStrokeRadius > 0.5f * mHeight) {
@@ -334,25 +320,25 @@ public class SwitchMultiButton extends View {
                     } else {
                         addTab(i);
                     }
-                    //mSelectedTabs.clear();
                 }
             }
             invalidate();
         }
-        return true;
+        return isEnabled();
     }
 
-    private void removeTab(int i) {
-        mSelectedTabs.remove(i);
-
-        if (onSwitchListener != null) {
-            onSwitchListener.onSwitch(i, mTabTexts[i]);
+    private void removeTab(int tab) {
+        mSelectedTabs.remove(tab);
+        if (!mAllowMultiTab)
+            addTab(tab);
+        else {
+            if (onSwitchListener != null) {
+                onSwitchListener.onSwitch(tab, mTabTexts[tab], false);
+            }
         }
     }
 
-    /*=========================================Interface=========================================*/
-
-    public SwitchMultiButton setOnSwitchListener(@NonNull OnSwitchListener onSwitchListener) {
+    public MultiSwitch setOnSwitchListener(@NonNull OnSwitchListener onSwitchListener) {
         this.onSwitchListener = onSwitchListener;
         return this;
     }
@@ -364,53 +350,48 @@ public class SwitchMultiButton extends View {
         return mSelectedTabs.toArray(new Integer[mSelectedTabs.size()]);
     }
 
-    /*=========================================Set and Get=========================================*/
-
     /**
      * Set a tab to selected
      *
-     * @param mSelectedTab integer with the position of the tab
+     * @param selectedTab integer with the position of the tab
      */
-    public void setSelectedTab(int mSelectedTab) {
-        addTab(mSelectedTab);
+    public MultiSwitch setSelectedTab(int selectedTab) {
+        addTab(selectedTab);
         invalidate();
+        return this;
     }
 
     private void addTab(int tab) {
-        if (!allowMultiTab)
+        if (!mAllowMultiTab)
             mSelectedTabs.clear();
-
-        this.mSelectedTabs.add(tab);
-
+        mSelectedTabs.add(tab);
         if (onSwitchListener != null) {
-            onSwitchListener.onSwitch(tab, mTabTexts[tab]);
+            onSwitchListener.onSwitch(tab, mTabTexts[tab], true);
         }
     }
 
     /**
      * Unselect a tab
      *
-     * @param mSelectedTab integer with the position of the tab
+     * @param selectedTab integer with the position of the tab
      */
-    public void unselectTab(int mSelectedTab) {
-        removeTab(mSelectedTab);
+    public void unselectTab(int selectedTab) {
+        removeTab(selectedTab);
         invalidate();
     }
 
     public void clearSelected() {
         HashSet<Integer> cp = new HashSet(mSelectedTabs);
 
-        this.mSelectedTabs.clear();
+        mSelectedTabs.clear();
         invalidate();
 
         Iterator<Integer> it = cp.iterator();
 
         while (it.hasNext()) {
-            if (onSwitchListener != null) {
-                Integer i = it.next();
-                removeTab(i);
-                it.remove();
-            }
+            Integer i = it.next();
+            removeTab(i);
+            it.remove();
         }
     }
 
@@ -420,9 +401,9 @@ public class SwitchMultiButton extends View {
      * @param tagTexts
      * @return
      */
-    public SwitchMultiButton setText(String... tagTexts) {
+    public MultiSwitch setText(String... tagTexts) {
         if (tagTexts.length > 1) {
-            this.mTabTexts = tagTexts;
+            mTabTexts = tagTexts;
             mTabNum = tagTexts.length;
             requestLayout();
             return this;
@@ -436,11 +417,12 @@ public class SwitchMultiButton extends View {
      *
      * @param typeface
      */
-    public void setTypeface(Typeface typeface) {
-        this.typeface = typeface;
+    public MultiSwitch setTypeface(@NonNull Typeface typeface) {
+        mTypeface = typeface;
         mSelectedTextPaint.setTypeface(typeface);
         mUnselectedTextPaint.setTypeface(typeface);
         invalidate();
+        return this;
     }
     /*======================================save and restore======================================*/
 
@@ -463,7 +445,7 @@ public class SwitchMultiButton extends View {
         bundle.putFloat("TextSize", mTextSize);
         bundle.putInt("SelectedColor", mSelectedColor);
         bundle.putSerializable("SelectedTab", (HashSet<Integer>) mSelectedTabs);
-        bundle.putBoolean("AllowMultiTab", allowMultiTab);
+        bundle.putBoolean("AllowMultiTab", mAllowMultiTab);
         return bundle;
     }
     /*======================================save and restore======================================*/
@@ -477,7 +459,7 @@ public class SwitchMultiButton extends View {
             mTextSize = bundle.getFloat("TextSize");
             mSelectedColor = bundle.getInt("SelectedColor");
             mSelectedTabs = (HashSet<Integer>) bundle.getSerializable("SelectedTab");
-            allowMultiTab = bundle.getBoolean("AllowMultiTab");
+            mAllowMultiTab = bundle.getBoolean("AllowMultiTab");
             super.onRestoreInstanceState(bundle.getParcelable("View"));
         } else {
             super.onRestoreInstanceState(state);
@@ -488,6 +470,6 @@ public class SwitchMultiButton extends View {
      * called when a tab is switched
      */
     public interface OnSwitchListener {
-        void onSwitch(int position, String tabText);
+        void onSwitch(int position, String tabText, boolean isSelected);
     }
 }

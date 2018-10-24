@@ -1,12 +1,12 @@
-package com.kingja.switchbutton;
+package com.multiswitch.app;
+
+import com.multiswitch.MultiSwitch;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-
-import lib.kingja.switchbutton.SwitchMultiButton;
 
 import static junit.framework.Assert.assertFalse;
 import static org.junit.Assert.assertArrayEquals;
@@ -18,13 +18,12 @@ import static org.junit.Assert.assertTrue;
 @RunWith(RobolectricTestRunner.class)
 public class ApplicationTest {
 
-    private MainActivity a;
-    private SwitchMultiButton smb;
+    private MultiSwitch multiswitch;
 
     @Before
     public void setUp() {
-        a = Robolectric.setupActivity(MainActivity.class);
-        smb = a.getSwitchMultiButton();
+        MainActivity activity = Robolectric.setupActivity(MainActivity.class);
+        multiswitch = activity.getSwitchMultiButton();
     }
 
     @Test
@@ -34,13 +33,13 @@ public class ApplicationTest {
         sb.append("in: ");
 
         for (Integer i : in) {
-            smb.setSelectedTab(i);
+            multiswitch.setSelectedTab(i);
             sb.append(i).append(" ");
         }
 
         sb.append("out: ");
 
-        Integer out[] = smb.getSelectedTabs();
+        Integer out[] = multiswitch.getSelectedTabs();
 
         for (Integer i : out) {
             sb.append(i).append(" ");
@@ -54,47 +53,47 @@ public class ApplicationTest {
         Integer in[] = new Integer[]{0, 1, 2, 3};
 
         for (Integer i : in) {
-            smb.setSelectedTab(i);
+            multiswitch.setSelectedTab(i);
         }
 
-        Integer out[] = smb.getSelectedTabs();
+        Integer out[] = multiswitch.getSelectedTabs();
 
         assertArrayEquals(in, out);
 
-        smb.clearSelected();
+        multiswitch.clearSelected();
 
-        assertArrayEquals(smb.getSelectedTabs(), new Integer[]{});
+        assertArrayEquals(multiswitch.getSelectedTabs(), new Integer[]{});
 
         for (Integer i : in) {
             if (i % 2 == 1)
-                smb.setSelectedTab(i);
+                multiswitch.setSelectedTab(i);
         }
 
-        assertArrayEquals(smb.getSelectedTabs(), new Integer[]{1, 3});
+        assertArrayEquals(multiswitch.getSelectedTabs(), new Integer[]{1, 3});
     }
 
     @Test
     public void testGetButtonStatus() {
-        smb.clearSelected();
+        multiswitch.clearSelected();
 
         Integer in[] = new Integer[]{0, 3};
         for (Integer i : in) {
-            smb.setSelectedTab(i);
+            multiswitch.setSelectedTab(i);
         }
-        assertTrue(smb.getState(0));
-        assertTrue(smb.getState(3));
-        assertFalse(smb.getState(1));
-        assertFalse(smb.getState(2));
+        assertTrue(multiswitch.getState(0));
+        assertTrue(multiswitch.getState(3));
+        assertFalse(multiswitch.getState(1));
+        assertFalse(multiswitch.getState(2));
 
-        smb.clearSelected();
+        multiswitch.clearSelected();
 
-        assertFalse(smb.getState(0));
-        assertFalse(smb.getState(3));
+        assertFalse(multiswitch.getState(0));
+        assertFalse(multiswitch.getState(3));
 
-        smb.setSelectedTab(1);
-        smb.setSelectedTab(2);
+        multiswitch.setSelectedTab(1);
+        multiswitch.setSelectedTab(2);
 
-        assertTrue(smb.getState(1));
-        assertTrue(smb.getState(2));
+        assertTrue(multiswitch.getState(1));
+        assertTrue(multiswitch.getState(2));
     }
 }

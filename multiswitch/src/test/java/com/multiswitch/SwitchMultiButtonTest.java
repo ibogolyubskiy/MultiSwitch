@@ -1,8 +1,7 @@
-package lib.kingja.switchbutton;
+package com.multiswitch;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 
 /**

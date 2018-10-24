@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SwitchButton</string>
+    <string name="app_name">MultiSwitch</string>
     <string name="toasts">Toasts</string>
     <string name="select_all">Select all</string>
     <string name="unselect_all">Unselect all</string>

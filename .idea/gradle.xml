@@ -9,7 +9,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/libk-switchbutton" />
+            <option value="$PROJECT_DIR$/multiswitch" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="SwitchMultiButton">
+    <declare-styleable name="MultiSwitch">
         <attr name="strokeRadius" format="dimension" />
         <attr name="strokeWidth" format="dimension" />
         <attr name="textSize" format="dimension" />
