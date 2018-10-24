@@ -1,5 +1,5 @@
 # SwitchButton
-A smart switchable button,support multiple tabs. CLICK THE ***STAR***  if it's useful for you.
+A smart switchable button,support multiple tabs.
 
 ## Preview
 ![](https://github.com/KingJA/SwitchButton/blob/master/img/usage.gif)
@@ -17,7 +17,7 @@ A smart switchable button,support multiple tabs. CLICK THE ***STAR***  if it's u
 ![](https://github.com/KingJA/SwitchButton/blob/master/img/mark.png)
 ## Gradle
 ```xml
- compile 'lib.kingja.switchbutton:switchbutton:1.1.7'
+ compile 'com.github.ibogolyubskiy:MultiSwitch:1.1.7'
 ```
 
 ## Usage
@@ -63,7 +63,7 @@ SwitchMultiButton mSwitchMultiButton = (SwitchMultiButton) findViewById(R.id.swi
 
 ## Contact me
 Any questions:Welcome to contact me.
-* Email:kingjavip@gmail.com
+* Email:ibogolyubskiy@gmail.com
 
 ## License
 
