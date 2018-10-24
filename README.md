@@ -24,16 +24,16 @@ A smart switchable button, support multiple tabs.
 ### step 1
 ```xml
 <com.multiswitch.MultiSwitch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        app:strokeRadius="5dp"
-        app:strokeWidth="1dp"
-        app:selectedTab="0"
-        app:selectedColor="#eb7b00"
-        app:switchTabs="@array/switch_tabs"
-        app:typeface="DeVinneTxtBT.ttf"
-        app:textSize="14sp" />
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    app:strokeRadius="5dp"
+    app:strokeWidth="1dp"
+    app:selectedTab="0"
+    app:selectedColor="#eb7b00"
+    app:switchTabs="@array/switch_tabs"
+    app:typeface="DeVinneTxtBT.ttf"
+    app:textSize="14sp" />
 ```
 
 ### step 2
