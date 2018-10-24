@@ -1,5 +1,5 @@
 # SwitchButton
-A smart switchable button,support multiple tabs.
+A smart switchable button, support multiple tabs.
 
 ## Preview
 ![](https://github.com/KingJA/SwitchButton/blob/master/img/usage.gif)
@@ -23,7 +23,7 @@ A smart switchable button,support multiple tabs.
 ## Usage
 ### step 1
 ```xml
-<lib.kingja.switchbutton.SwitchMultiButton
+<com.multiswitch.MultiSwitch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="8dp"
@@ -40,34 +40,34 @@ A smart switchable button,support multiple tabs.
 ```java
 //set switch tabs with ***app:switchTabs*** in xml 
 
-SwitchMultiButton mSwitchMultiButton = (SwitchMultiButton) findViewById(R.id.switchmultibutton);
-        mSwitchMultiButton.setOnSwitchListener(new SwitchMultiButton.OnSwitchListener() {
-            @Override
-            public void onSwitch(int position, String tabText) {
-                Toast.makeText(MainActivity.this, tabText, Toast.LENGTH_SHORT).show();
-            }
-        });
+MultiSwitch mMultiSwitch = (MultiSwitch) findViewById(R.id.multiswitch);
+mMultiSwitch.setOnSwitchListener(new MultiSwitch.OnSwitchListener() {
+    @Override
+    public void onSwitch(int position, String tabText, boolean isSelected) {
+        String action = isSelected ? " selected" : " unselected";
+        Toast.makeText(MainActivity.this, tabText + action, Toast.LENGTH_SHORT).show();
+    }
+});
         
 //or set switch tabs in java code
 
-SwitchMultiButton mSwitchMultiButton = (SwitchMultiButton) findViewById(R.id.switchmultibutton);
-        mSwitchMultiButton.setText("点个Star", "狠心拒绝").setOnSwitchListener(new SwitchMultiButton.OnSwitchListener() {
-            @Override
-            public void onSwitch(int position, String tabText) {
-                Toast.makeText(MainActivity.this, tabText, Toast.LENGTH_SHORT).show();
-            }
-        });
+MultiSwitch mMultiSwitch = (MultiSwitch) findViewById(R.id.multiswitch);
+mMultiSwitch.setText("Day", "Night").setOnSwitchListener(new MultiSwitch.OnSwitchListener() {
+    @Override
+    public void onSwitch(int position, String tabText, boolean isSelected) {
+        String action = isSelected ? " selected" : " unselected";
+        Toast.makeText(MainActivity.this, tabText + action, Toast.LENGTH_SHORT).show();
+    }
+});
 ```
 ## [Changelog](ChangeLogs.md)
 
 
 ## Contact me
-Any questions:Welcome to contact me.
-* Email:ibogolyubskiy@gmail.com
+Any questions: Welcome to contact me.
+* Email: ibogolyubskiy@gmail.com
 
 ## License
-
-    Copyright 2017 KingJA
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
