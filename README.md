@@ -1,4 +1,4 @@
-# SwitchButton
+# MultiSwitch
 A smart switchable button, support multiple tabs.
 
 ## Preview
