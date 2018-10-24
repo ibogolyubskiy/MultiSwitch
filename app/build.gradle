@@ -18,6 +18,12 @@ android {
         }
     }
 
+    testOptions{
+        unitTests{
+            includeAndroidResources = true
+        }
+    }
+
     lintOptions {
         abortOnError false
     }
@@ -29,4 +35,5 @@ dependencies {
     implementation project(':libk-switchbutton')
 //    compile 'lib.kingja.switchbutton:switchbutton:1.1.6'
     implementation "com.android.support:appcompat-v7:$rootProject.ext.supportVersion"
+    testImplementation "org.robolectric:robolectric:3.8"
 }
