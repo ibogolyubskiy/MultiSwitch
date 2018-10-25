@@ -17,7 +17,7 @@ A smart switchable button, support multiple tabs.
 ![](https://github.com/KingJA/SwitchButton/blob/master/img/mark.png)
 ## Gradle
 ```xml
- compile 'com.github.ibogolyubskiy:MultiSwitch:1.1.7'
+ compile 'com.github.ibogolyubskiy:MultiSwitch:1.1.8'
 ```
 
 ## Usage
