@@ -32,6 +32,7 @@ public class MultiSwitch extends View {
     private static final int SELECTED_COLOR = 0xffeb7b00;
     private static final int SELECTED_TAB = 0;
     private static final boolean ALLOW_MULTI_TAB = false;
+    private static final boolean FIRE_NON_MANUAL_EVENT = false;
 
     /*other*/
     private Paint mStrokePaint;
@@ -51,6 +52,7 @@ public class MultiSwitch extends View {
     private Paint.FontMetrics mFontMetrics;
     private Typeface mTypeface;
     private boolean mAllowMultiTab;
+    private boolean mFireNonManualEvent;
 
     public MultiSwitch(Context context) {
         this(context, null);
@@ -81,6 +83,7 @@ public class MultiSwitch extends View {
         mSelectedColor = typedArray.getColor(R.styleable.MultiSwitch_selectedColor, SELECTED_COLOR);
         mSelectedTabs.add(typedArray.getInteger(R.styleable.MultiSwitch_selectedTab, SELECTED_TAB));
         mAllowMultiTab = typedArray.getBoolean(R.styleable.MultiSwitch_allowMultiTab, ALLOW_MULTI_TAB);
+        mFireNonManualEvent = typedArray.getBoolean(R.styleable.MultiSwitch_fireNonManualEvent, FIRE_NON_MANUAL_EVENT);
         int mSwitchTabsResId = typedArray.getResourceId(R.styleable.MultiSwitch_switchTabs, 0);
         if (mSwitchTabsResId != 0) {
             mTabTexts = getResources().getStringArray(mSwitchTabsResId);
@@ -316,9 +319,9 @@ public class MultiSwitch extends View {
             for (int i = 0; i < mTabNum; i++) {
                 if (x > perWidth * i && x < perWidth * (i + 1)) {
                     if (mSelectedTabs.contains(i)) {
-                        removeTab(i);
+                        unselectTab(i, true);
                     } else {
-                        addTab(i);
+                        selectTab(i, true);
                     }
                 }
             }
@@ -327,12 +330,12 @@ public class MultiSwitch extends View {
         return isEnabled();
     }
 
-    private void removeTab(int tab) {
+    private void unselectTab(int tab, boolean fireEvent) {
         mSelectedTabs.remove(tab);
         if (!mAllowMultiTab)
-            addTab(tab);
+            selectTab(tab, false);
         else {
-            if (onSwitchListener != null) {
+            if (onSwitchListener != null && fireEvent) {
                 onSwitchListener.onSwitch(tab, mTabTexts[tab], false);
             }
         }
@@ -355,17 +358,17 @@ public class MultiSwitch extends View {
      *
      * @param selectedTab integer with the position of the tab
      */
-    public MultiSwitch setSelectedTab(int selectedTab) {
-        addTab(selectedTab);
+    public MultiSwitch setTabSelected(int selectedTab) {
+        selectTab(selectedTab, mFireNonManualEvent);
         invalidate();
         return this;
     }
 
-    private void addTab(int tab) {
+    private void selectTab(int tab, boolean fireEvent) {
         if (!mAllowMultiTab)
             mSelectedTabs.clear();
         mSelectedTabs.add(tab);
-        if (onSwitchListener != null) {
+        if (onSwitchListener != null && fireEvent) {
             onSwitchListener.onSwitch(tab, mTabTexts[tab], true);
         }
     }
@@ -375,8 +378,8 @@ public class MultiSwitch extends View {
      *
      * @param selectedTab integer with the position of the tab
      */
-    public void unselectTab(int selectedTab) {
-        removeTab(selectedTab);
+    public void setTabUnselected(int selectedTab) {
+        unselectTab(selectedTab, mFireNonManualEvent);
         invalidate();
     }
 
@@ -390,7 +393,7 @@ public class MultiSwitch extends View {
 
         while (it.hasNext()) {
             Integer i = it.next();
-            removeTab(i);
+            unselectTab(i, mFireNonManualEvent);
             it.remove();
         }
     }

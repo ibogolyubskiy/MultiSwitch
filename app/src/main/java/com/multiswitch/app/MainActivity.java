@@ -51,10 +51,10 @@ public class MainActivity extends AppCompatActivity {
         switch1.setText(tabTexts1).setTypeface(typeface).setOnSwitchListener(onSwitchListener);
         Integer in[] = new Integer[]{0, 2};
         for (Integer i : in) {
-            switch1.setSelectedTab(i);
+            switch1.setTabSelected(i);
         }
         switch2.setText("Day", "Night").setOnSwitchListener(onSwitchListener);
-        switch3.setSelectedTab(1).setOnSwitchListener(onSwitchListener);
+        switch3.setTabSelected(1).setOnSwitchListener(onSwitchListener);
         switch4.setText(tabTexts4).setOnSwitchListener(onSwitchListener);
 
         unselect.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
             for (int i = 0; i < tabTexts1.length; i++) {
-                switch1.setSelectedTab(i);
+                switch1.setTabSelected(i);
             }
             }
         });

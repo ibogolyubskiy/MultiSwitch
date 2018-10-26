@@ -9,5 +9,6 @@
         <attr name="switchTabs" format="reference" />
         <attr name="typeface" format="string" />
         <attr name="allowMultiTab" format="boolean" />
+        <attr name="fireNonManualEvent" format="boolean" />
     </declare-styleable>
 </resources>

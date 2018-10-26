@@ -33,7 +33,7 @@ public class ApplicationTest {
         sb.append("in: ");
 
         for (Integer i : in) {
-            multiswitch.setSelectedTab(i);
+            multiswitch.setTabSelected(i);
             sb.append(i).append(" ");
         }
 
@@ -53,7 +53,7 @@ public class ApplicationTest {
         Integer in[] = new Integer[]{0, 1, 2, 3};
 
         for (Integer i : in) {
-            multiswitch.setSelectedTab(i);
+            multiswitch.setTabSelected(i);
         }
 
         Integer out[] = multiswitch.getSelectedTabs();
@@ -66,7 +66,7 @@ public class ApplicationTest {
 
         for (Integer i : in) {
             if (i % 2 == 1)
-                multiswitch.setSelectedTab(i);
+                multiswitch.setTabSelected(i);
         }
 
         assertArrayEquals(multiswitch.getSelectedTabs(), new Integer[]{1, 3});
@@ -78,7 +78,7 @@ public class ApplicationTest {
 
         Integer in[] = new Integer[]{0, 3};
         for (Integer i : in) {
-            multiswitch.setSelectedTab(i);
+            multiswitch.setTabSelected(i);
         }
         assertTrue(multiswitch.getState(0));
         assertTrue(multiswitch.getState(3));
@@ -90,8 +90,8 @@ public class ApplicationTest {
         assertFalse(multiswitch.getState(0));
         assertFalse(multiswitch.getState(3));
 
-        multiswitch.setSelectedTab(1);
-        multiswitch.setSelectedTab(2);
+        multiswitch.setTabSelected(1);
+        multiswitch.setTabSelected(2);
 
         assertTrue(multiswitch.getState(1));
         assertTrue(multiswitch.getState(2));
